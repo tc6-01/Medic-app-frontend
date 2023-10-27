@@ -3,7 +3,7 @@ import GroupItem from "../common/GroupItem"
 import VerticalList from "../common/VerticalList"
 import { useNavigate } from 'react-router';
 import { Box, Fade } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect} from "react";
 import { getFileList, myShareFile } from "src/service/medic";
 
 const options = [
@@ -24,18 +24,20 @@ const FileShareWrapper = () => {
     const navi = useNavigate()
     useEffect(() => {
         // 调用接口，获取列表数量
-        myShareFile().then(res => {
-          if (res && res.code === 0) {
-            options[0].description = res.data.length.toString()
-          }
-        }),
-        getFileList().then(res=>{
-            if(res && res.code === 0){
-                options[1].description = res.data.length.toString()
+        const getList = async () => {
+            myShareFile().then(res => {
+            if (res && res.code === 0) {
+                options[0].description = res.data.length.toString() + '项'
             }
-        })
-        console.log('options', options)
-      })
+            })
+            getFileList().then(res=>{
+            if (res && res.code === 0) {
+                options[1].description = res.data.length.toString() + '项'
+                }
+            })
+        }
+        getList()
+      }, [])
     // 获取文件数量
     const handleFileGroupClicked = (index: number) => {
         switch (index) {
@@ -53,9 +55,15 @@ const FileShareWrapper = () => {
     return <Fade in={true}>
         <Box>
             <VerticalList items={options.map((item, index) => {
-                return <GroupItem key={index} groupName={item.name} description={item.description} icon={item.icon} onClick={() => handleFileGroupClicked(index)} />
+                return <GroupItem key={index}
+                    groupName={item.name} 
+                    description={item.description} 
+                    icon={item.icon} 
+                    onClick={() => handleFileGroupClicked(index)} 
+                    />
             })} />
         </Box>
     </Fade>
 }
 export default FileShareWrapper
+
