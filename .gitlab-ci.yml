@@ -1,0 +1,40 @@
+stages:
+  - prebuild
+  - build
+  - manualbuild
+
+prebuild:
+  image: jitesoft/node-yarn:19
+  stage: prebuild
+  only:
+    changes:
+      - package.json
+    refs:
+      - main
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+      - node_modules/
+  script:
+    - yarn install
+build:
+  image: jitesoft/node-yarn:19
+  stage: build
+  only:
+    - main
+  cache:
+    key:
+      files:
+        - package.json
+    policy: pull
+    paths:
+      - node_modules/
+  artifacts:
+    name: release
+    paths:
+      - build/
+  script:
+    - export CI=false
+    - yarn build
