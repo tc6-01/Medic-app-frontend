@@ -98,14 +98,7 @@ export interface Login {
     username: string
     password: string
 }
-// {
-//     "fileName": "string",
-//     "owner": "string",
-//     "expire": 0,
-//     "use": 0,
-//     "useLimit": 0,
-//     "fileSize": 0
-// }
+
 export interface File {
     fileName: string,
     owner: string,
@@ -171,7 +164,7 @@ export const getUserList = async (): Promise<ServiceResponse<Array<string>>> => 
  * @export
  * @interface LoginResultResponse
  */
-// 上传数据
+// 获取分享出去的文件列表
 export const shareFile = async (param: ShareParam): Promise<ServiceResponse<undefined>> => {
     const res = await axios.post('/file/share', param, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
@@ -181,7 +174,7 @@ export const myShareFile = async (): Promise<ServiceResponse<Array<SharedFile>>>
     const res = await axios.get('/file/share', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
-
+// 根据文件名称下载文件
 export const downloadFile = async (fileName: string): Promise<any> => {
     const res = await axios.get(`/file/download?filename=${fileName}`, { responseType: 'blob', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data

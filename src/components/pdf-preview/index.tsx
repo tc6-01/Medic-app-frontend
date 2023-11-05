@@ -11,14 +11,13 @@ import { downloadFile } from 'src/service/medic';
 import { FileItemData } from 'src/types/ComponentProps';
 import { toLocalTimeString } from 'src/utils/time';
 const PdfPreviewWrapper = (props) => {
-
-  //console.log(props.pdf_id)
   const [pdfblob, setPdfBlob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalPage, setTotalPages] = useState(1);
   const fileData = props.file as FileItemData
   useEffect(() => {	//重点在此！！！！！如何将PDF文件流转base64
     downloadFile(fileData.name).then(res => {
+      console.log(res)
       let blob = new Blob([res], { type: "application/pdf" })
       let reader = new FileReader();
       reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
@@ -42,7 +41,7 @@ const PdfPreviewWrapper = (props) => {
     for (let i = 2; i <= totalPage; i++) {
       x.push(
         <Box key={i} justifyContent={'center'} display='flex' sx={{ objectFit: 'contain' }}>
-          <PDF workerSrc='/android_asset/build/pdf.worker.js' page={i} key={`x${i}`} scale={0.8} file={newpdfblob} />
+          <PDF workerSrc='pdf.worker.js' page={i} key={`x${i}`} scale={0.8} file={newpdfblob} />
         </Box>)
       x.push(<Box justifyContent={'center'} key={`c${i}`} display='flex'>{i}</Box>)
     }
@@ -58,7 +57,7 @@ const PdfPreviewWrapper = (props) => {
           <Box justifyContent={'center'} display='flex'>{`剩余使用次数:${fileData.useLimit - fileData.use - 1}`}</Box>
           <Box justifyContent={'center'} display='flex' sx={{ objectFit: 'contain' }}>
             <PDF scale={0.8}
-              workerSrc='/android_asset/build/pdf.worker.js'
+              workerSrc='pdf.worker.js'
               file={newpdfblob}
               onDocumentComplete={onDocumentLoadSuccess}
               page={1} />

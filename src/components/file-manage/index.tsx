@@ -43,7 +43,7 @@ const FileManageWrapper = () => {
     }, []); // 空依赖数组意味着这个 useEffect 只会在组件挂载后执行一次
 
     const handleFileOperation = (ty: FileManageOperationType, index: number) => {
-        console.log(index)
+        console.log(files[index]);
         switch (ty) {
             case 'delete':
                 console.log('delete files at index', index);

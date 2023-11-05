@@ -39,11 +39,7 @@ const SharedByMeWrapper = () => {
         break;
       case 'open':
         bottomeDrawerStates.setBottomDrawerOpen(false)
-        console.log(states.files)
         navi('/pdfpreview', { state: SharedFileToFileItemData(index, states.files[index]) })//传入Id值
-        break;
-      case 'share':
-        console.log('share files at index', index);
         break;
       case 'detail':
         console.log('detail files at index', index);

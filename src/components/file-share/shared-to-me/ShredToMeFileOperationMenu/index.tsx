@@ -8,7 +8,7 @@ import VerticalList from 'src/components/common/VerticalList';
 import { FileOperationMenuProps } from '../../../../types/ComponentProps';
 
 
-
+// 触发菜单向处理函数传递参数，执行对应的逻辑
 const ShredToMeFileOperationMenu = ({ fileName, onOperationClicked }: FileOperationMenuProps) => {
     return (
         <Stack m={1}>

@@ -33,6 +33,7 @@ const SharedToMeWrapper = () => {
     })
   }, [])
 
+  // 处理菜单按钮
   const handleFileOperation = (ty: any, index: number) => {
     switch (ty) {
       case 'delete':
@@ -42,7 +43,6 @@ const SharedToMeWrapper = () => {
         drawerStates.setBottomDrawerOpen(false)
         console.log(states.files)
         navi('/pdfpreview', { state: states.files[index] })//传入Id值
-        break;
         break;
       case 'share':
         console.log('share files at index', index);
