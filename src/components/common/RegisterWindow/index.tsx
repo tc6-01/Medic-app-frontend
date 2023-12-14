@@ -2,7 +2,6 @@
 // ** MUI Components
 
 import FooterIllustrationsV1 from 'src/components/user/login/FooterIllustration'
-import { login } from 'src/service/userApi'
 import { SnackBarStore } from 'src/states/global/TopSnackBarStore'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -27,6 +26,8 @@ import { LoginPageStore } from 'src/states/page/user/login'
 import { Stack, Container } from '@mui/material';
 import PasswordInput from '../PasswordInput/index';
 import { RegisterWindowStore } from '../../../states/page/user/register/index';
+import { register } from 'src/service/medic'
+
 
 
 
@@ -54,19 +55,19 @@ const RegisterWindow = () => {
     const navigator = useNavigate()
 
     const handleClickRegister = () => {
-        login(states.userName, states.passWord).then((res) => {
-            if (res && res.status == 0) {
+        register(states.userName, states.passWord, states.repetePassword).then((res) => {
+            if (res && res.code == "200") {
                 topSnackBarStates.setSnackBarMessage('注册成功，请重新登录')
                 topSnackBarStates.setSnackBarOpen(true)
                 topSnackBarStates.setSnackBarType('success')
                 navigator('/user/login', { replace: true })
             } else {
-                topSnackBarStates.setSnackBarMessage(`注册成功,${res.message}`)
+                topSnackBarStates.setSnackBarMessage(`注册失败,${res.message}`)
                 topSnackBarStates.setSnackBarOpen(true)
                 topSnackBarStates.setSnackBarType('error')
             }
         }).catch((err) => {
-            topSnackBarStates.setSnackBarMessage(`注册成功,${err}`)
+            topSnackBarStates.setSnackBarMessage(`注册失败,${err}`)
             topSnackBarStates.setSnackBarOpen(true)
             topSnackBarStates.setSnackBarType('error')
         })

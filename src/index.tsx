@@ -12,8 +12,24 @@ import { LoadingStore } from './states/common/LoadingStore';
 import { ConfirmDeleteDialogStore } from './states/common/ConfirmDeleteDialogStore';
 import { HeaderStore } from './states/global/HeaderStore';
 import { CreatePolicyPageStore } from './states/page/policy-manage/CreatePolicyPageStore';
-axios.defaults.baseURL = 'http://121.5.73.12:8080';
+axios.defaults.baseURL = 'http://127.0.0.1:8080';
 // axios.defaults.baseURL = 'http://127.0.0.1:8080';
+// 创建一个请求拦截器函数
+function interceptor(config) {
+  // 获取请求的数据
+  console.log('拦截器：', config.data);
+  return config;
+ }
+ 
+ // 添加请求拦截器
+ axios.interceptors.request.use(interceptor);
+ // 创建响应拦截器
+ function responseInterceptor(response) {
+   console.log('响应拦截器：', response);
+   return response;
+ }
+ // 添加响应拦截器
+ axios.interceptors.response.use(responseInterceptor);
 const root = document.getElementById('root')
 const render = createRoot(root)
 render.render(

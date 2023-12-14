@@ -99,6 +99,12 @@ export interface Login {
     password: string
 }
 
+export interface Regitser{
+    username: string,
+    password: string,
+    retry_password: string
+}
+
 export interface File {
     fileName: string,
     owner: string,
@@ -140,11 +146,15 @@ export function SharedFileToFileItemData(idx: number, item: SharedFile): FileIte
  * @interface LoginResultResponse
  */
 export const login = async (userName: string, passWord: string): Promise<ServiceResponse<LoginResult>> => {
-    const res = await axios.post('/login', { userName, passWord })
+    const res = await axios.post('/user/login', {"username" : userName, "password":passWord })
     return res.data
 }
 
-
+export const register = async (userName: string, passWord: string, repeatPass: string) =>{
+    const res = await axios.post('/user/register', {"username" : userName, "password":passWord ,"retry_password":repeatPass})
+    console.log(res)
+    return res.data
+}
 /**
  *
  * @export

@@ -61,16 +61,6 @@ const LoginPageWrapper = () => {
     }
 
     const handleClickLogin = () => {
-        //check localstorage token first
-        // const refreshTime = localStorage.getItem('tokenRefreshAfter')
-        // if (refreshTime && (new Date().getTime()) < parseInt(refreshTime)) {
-        //     const now = new Date().getTime()
-        //     if (parseInt(refreshTime) > now) { //token有效
-        //         console.log('token有效')
-        //         navigator('/dashboard')
-        //         return
-        //     }
-        // }
         login(states.userName, states.passWord).then((res) => {
             if (res && res.code == 200) {
                 topSnackBarStates.setSnackBarMessage('登录成功')
