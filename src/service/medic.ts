@@ -41,6 +41,8 @@ export interface ShareParam {
     isGroup: boolean;
 }
 
+
+
 /**
  * 
  * @export
@@ -105,7 +107,7 @@ export interface Regitser{
     retry_password: string
 }
 
-export interface File {
+export interface CommonFile {
     fileName: string,
     owner: string,
     expire: number,
@@ -114,7 +116,7 @@ export interface File {
     fileSize: number
 }
 
-export function FileToFileItemData(idx: number, item: File): FileItemData {
+export function FileToFileItemData(idx: number, item: CommonFile): FileItemData {
     const owner = localStorage.getItem('username')
     return {
         id: idx,
@@ -152,7 +154,6 @@ export const login = async (userName: string, passWord: string): Promise<Service
 
 export const register = async (userName: string, passWord: string, repeatPass: string) =>{
     const res = await axios.post('/user/register', {"username" : userName, "password":passWord ,"retry_password":repeatPass})
-    console.log(res)
     return res.data
 }
 /**
@@ -160,7 +161,7 @@ export const register = async (userName: string, passWord: string, repeatPass: s
  * @export
  * @interface LoginResultResponse
  */
-export const getFileList = async (): Promise<ServiceResponse<Array<File>>> => {
+export const getFileList = async (): Promise<ServiceResponse<Array<CommonFile>>> => {
     const res = await axios.get('/file', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
@@ -187,5 +188,9 @@ export const myShareFile = async (): Promise<ServiceResponse<Array<SharedFile>>>
 // 根据文件名称下载文件
 export const downloadFile = async (fileName: string): Promise<any> => {
     const res = await axios.get(`/file/download?filename=${fileName}`, { responseType: 'blob', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+    return res.data
+}
+export const uploadFile = async(param:FormData): Promise<any>=>{
+    const res = await axios.post(`/admin/upload`,param,{headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }})
     return res.data
 }

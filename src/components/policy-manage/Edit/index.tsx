@@ -170,18 +170,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
           onChange: onChange
         }
       },
-      // {
-      //   type: 'time',
-      //   display: states.timeDisplay,
-      //   value: {
-      //     id: 'from',
-      //     value: states.from,
-      //     title: '开始时间',
-      //     onChange: (newValue: any) => {
-      //       states.setFrom(newValue)
-      //     }
-      //   }
-      // },
       {
         type: 'time',
         display: states.timeDisplay,
@@ -210,10 +198,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
     ]
   }
 
-  //取消弹框
-  const handleCancel = () => {
-    //dialogStates.setEditorDialogOpen(false)
-  }
 
   //创建数据通道请求
   const onSubmit = () => {
@@ -275,8 +259,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         if (res.code == 0) {
           Toast.success('添加成功')
           navi('/filemanage')
-          //getAll()
-          //dialogStates.setEditorDialogOpen(false)
         } else {
           Toast.error('请求失败' + res.message)
         }

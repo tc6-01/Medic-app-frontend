@@ -45,6 +45,7 @@ const LoginLazy = Loader(lazy(() => import('src/pages/user/login')));
 const RegisterLazy = Loader(lazy(() => import('src/pages/user/register')));
 // 文件预览及其子页面
 const PdfPreviewLazy = Loader(lazy(() => import('src/pages/pdf-preview')));
+const FileUploadLazy = Loader(lazy(() => import('src/pages/file-upload')));
 
 
 // Status
@@ -101,6 +102,7 @@ function createRoutes(isMobile: boolean): RouteObject[] {
         }
       ]
     },
+    
     {
       path: '/groupmanage',
       element: <MenuBarAfterAuth isMobile={isMobile} />,
@@ -169,7 +171,7 @@ function createRoutes(isMobile: boolean): RouteObject[] {
       ]
     },
     {
-      path: 'user',
+      path: '/user',
       element: <BlankLayout />,
       children: [
         {
@@ -190,6 +192,16 @@ function createRoutes(isMobile: boolean): RouteObject[] {
           path: '',
           element: <PdfPreviewLazy />
         },
+      ]
+    },
+    {
+      path: '/file',
+      element:<BlankLayout/>,
+      children:[
+        {
+          path:'upload',
+          element:<FileUploadLazy/>
+        }
       ]
     },
     {

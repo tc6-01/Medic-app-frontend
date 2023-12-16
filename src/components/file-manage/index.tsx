@@ -25,7 +25,6 @@ const FileManageWrapper = () => {
     useEffect(() => {
         // 获取文件数据
         getFileList().then((res) => {
-            console.log(res)
             setFiles(res.data.map((item, idx) => {
                 const owner = localStorage.getItem('username')
                 return {

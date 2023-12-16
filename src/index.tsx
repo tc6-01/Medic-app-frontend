@@ -17,7 +17,7 @@ axios.defaults.baseURL = 'http://127.0.0.1:8080';
 // 创建一个请求拦截器函数
 function interceptor(config) {
   // 获取请求的数据
-  console.log('拦截器：', config.data);
+  console.log('请求拦截器：', config);
   return config;
  }
  

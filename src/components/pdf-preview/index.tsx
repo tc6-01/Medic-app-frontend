@@ -17,7 +17,7 @@ const PdfPreviewWrapper = (props) => {
   const fileData = props.file as FileItemData
   useEffect(() => {	//重点在此！！！！！如何将PDF文件流转base64
     downloadFile(fileData.name).then(res => {
-      console.log(res)
+      console.log("下载函数返回值",res)
       let blob = new Blob([res], { type: "application/pdf" })
       let reader = new FileReader();
       reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
@@ -32,7 +32,6 @@ const PdfPreviewWrapper = (props) => {
   if (!pdfblob) return null
 
   function onDocumentLoadSuccess(totalPage: any) {
-    console.log(totalPage)
     setTotalPages(totalPage);
   }
 

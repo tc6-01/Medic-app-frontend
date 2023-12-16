@@ -57,10 +57,6 @@ function Header(props: { title: string }) {
         <Typography ml={5} color={theme.colors.secondary.main} variant="h3">{props.title}</Typography>
       </Stack>
       <HeaderUserbox />
-      {/* <Box display="flex" alignItems="center">
-        <HeaderButtons />
-        
-      </Box> */}
     </HeaderWrapper>
   );
 }
