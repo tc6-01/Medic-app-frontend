@@ -15,6 +15,11 @@ export interface ShareParam {
      * @memberof ShareParam
      */
     fileName: string;
+    // 共享策略名称
+    name:string;
+    // 共享策略描述
+    desc:string;
+
     /**
      * 
      * @type {string}
@@ -33,12 +38,6 @@ export interface ShareParam {
      * @memberof ShareParam
      */
     useLimit: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShareParam
-     */
-    isGroup: boolean;
 }
 
 
@@ -95,6 +94,7 @@ export interface SharedFile {
 
 export interface LoginResult {
     token: string
+    isAdmin : number
 }
 export interface Login {
     username: string

@@ -13,7 +13,6 @@ import { ConfirmDeleteDialogStore } from './states/common/ConfirmDeleteDialogSto
 import { HeaderStore } from './states/global/HeaderStore';
 import { CreatePolicyPageStore } from './states/page/policy-manage/CreatePolicyPageStore';
 axios.defaults.baseURL = 'http://127.0.0.1:8080';
-// axios.defaults.baseURL = 'http://127.0.0.1:8080';
 // 创建一个请求拦截器函数
 function interceptor(config) {
   // 获取请求的数据

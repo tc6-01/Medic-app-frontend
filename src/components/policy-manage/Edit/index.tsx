@@ -22,7 +22,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
   const [roles, setRoles] = useState<Array<RoleSelectData>>([])
   useEffect(() => {
     getUserList().then(res => {
-      if (res && res.code === 0) {
+      if (res && res.code === 200) {
         if (Array.isArray(res.data)) {
           setRoles(res.data.map((item, idx) => { return { id: idx.toString(), name: item } }))
         }
@@ -34,6 +34,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
   }, [])
   console.log(states.role)
   const onChange = (e: any) => {
+    // 绑定输入值（时间忽略）
     switch (e.target.id) {
       case 'policyName':
         states.setPolicyName(e.target.value)
@@ -41,28 +42,12 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
       case 'des':
         states.setDes(e.target.value)
         break
-      case 'userId':
-        // 两种字符分割
-        let userIdArray = e.target.value.split(/[；;]/)
-        states.setUserId(userIdArray)
-        break
-      case 'url':
-        let urlArray = e.target.value.split(/[；;]/)
-        states.setUrl(urlArray)
-        break
       case 'count':
         states.setCount(parseInt(e.target.value))
         break
-      case 'period':
-        states.setPeriod(e.target.value)
-        break
-      //id 没赋值进去直接传
       case 'role':
         states.setRole(e.target.value)
         break
-      //id 没赋值进去直接传
-      //   case 'delete':
-      //     break
       default:
         break
     }
@@ -75,6 +60,16 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         type: 'text',
         display: true,
         value: {
+          id: 'policyName',
+          name: '策略名称',
+          placeHolder: '请输入共享策略名称',
+          onChange: onChange
+        }
+      },
+      {
+        type: 'text',
+        display: true,
+        value: {
           id: 'des',
           name: '策略描述',
           placeHolder: '请输入共享描述',
@@ -82,8 +77,9 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         }
       },
       {
-        type: 'title'
+        type:"title"
       },
+      // 可控制显示
       {
         type: 'control',
         value: {
@@ -121,33 +117,12 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         display: states.roleDisplay,
         value: {
           id: 'role',
-          defaultValue: '',
           name: '用户角色',
-          placeHolder: '请选择用户角色',
+          placeHolder: '请选择共享用户',
           options: roles,
           onChange: (e: any) => {
             states.setRole(e.target.value)
           }
-        }
-      },
-      {
-        type: 'text',
-        display: states.userIdDisplay,
-        value: {
-          id: 'userId',
-          name: '使用用户id',
-          placeHolder: '请输入使用用户id，多个id用英文分号;分割',
-          onChange: onChange
-        }
-      },
-      {
-        type: 'text',
-        display: states.urlDisplay,
-        value: {
-          id: 'url',
-          name: '设备url',
-          placeHolder: '请输入设备url，多个设备url用英文分号;分割',
-          onChange: onChange
         }
       },
       {
@@ -157,16 +132,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
           id: 'count',
           name: '用户可访问次数',
           placeHolder: '请输入用户可访问次数',
-          onChange: onChange
-        }
-      },
-      {
-        type: 'text',
-        display: states.peroidDisplay,
-        value: {
-          id: 'period',
-          name: '用户可访问的频率(次/秒)',
-          placeHolder: '请输入用户可访问的频率(次/秒)',
           onChange: onChange
         }
       },
@@ -181,20 +146,22 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
             states.setTo(newValue)
           }
         }
-      },
-      {
-        type: 'switch',
-        display: states.timeDisplay,
-        value: {
-          id: 'delete',
-          checked: states.checked,
-          name: '到时间是否删除',
-          enabled: true,
-          onChange: (e: any) => {
-            states.setCheacked(e.target.checked)
-          }
-        }
       }
+     
+      // 默认使用到时删除
+      // {
+      //   type: 'switch',
+      //   display: states.timeDisplay,
+      //   value: {
+      //     id: 'delete',
+      //     checked: states.checked,
+      //     name: '到时间是否删除',
+      //     enabled: true,
+      //     onChange: (e: any) => {
+      //       states.setCheacked(e.target.checked)
+      //     }
+      //   }
+      // }
     ]
   }
 
@@ -205,58 +172,62 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
       Toast.warning('描述不能为空！')
       return
     }
-
-    let rules = []
-    states.userId.length !== 0 && states.userIdDisplay
-      ? rules.push({
-        type: 'user',
-        value: states.userId
-      })
-      : ''
-    states.url.length !== 0 && states.urlDisplay
-      ? rules.push({
-        type: 'target',
-        value: states.url
-      })
-      : ''
-    states.count !== 0 && states.countDisplay
-      ? rules.push({
-        type: 'count',
-        value: states.count
-      })
-      : ''
-    states.period.length !== 0 && states.peroidDisplay
-      ? rules.push({
-        type: 'peroid',
-        value: states.period
-      })
-      : ''
-    states.from != null && states.timeDisplay
-      ? rules.push({
-        type: 'useTime',
-        value: {
-          from: states.from.getTime(), //时间戳
-          to: states.to.getTime(),
-          delete: states.checked //到时间是否删除
-        }
-      })
-      : ''
-    states.role.length !== 0 && states.roleDisplay
-      ? rules.push({
-        type: 'role',
-        value: states.role
-      })
-      : ''
+    // 额外添加限制条件
+    // let rules = []
+    // states.userId.length !== 0 && states.userIdDisplay
+    //   ? rules.push({
+    //     type: 'user',
+    //     value: states.userId
+    //   })
+    //   : ''
+    // states.url.length !== 0 && states.urlDisplay
+    //   ? rules.push({
+    //     type: 'target',
+    //     value: states.url
+    //   })
+    //   : ''
+    // // 添加访问次数限制
+    // states.count !== 0 && states.countDisplay
+    //   ? rules.push({
+    //     type: 'count',
+    //     value: states.count
+    //   })
+    //   : ''
+    // states.period.length !== 0 && states.peroidDisplay
+    //   ? rules.push({
+    //     type: 'peroid',
+    //     value: states.period
+    //   })
+    //   : ''
+    // // 添加访问时间限制
+    // states.from != null && states.timeDisplay
+    //   ? rules.push({
+    //     type: 'useTime',
+    //     value: {
+    //       from: states.from.getTime(), //时间戳
+    //       to: states.to.getTime(),
+    //       delete: states.checked //到时间是否删除
+    //     }
+    //   })
+    //   : ''
+    // // 添加用户访问限制
+    // states.role.length !== 0 && states.roleDisplay
+    //   ? rules.push({
+    //     type: 'role',
+    //     value: states.role
+    //   })
+    //   : ''
 
     shareFile({
       fileName: filename,
       target: roles[states.role].name,
       expire: states.to.getTime(),
       useLimit: states.count,
-      isGroup: true
+      name: states.policyName,
+      desc: states.des,
     })
       .then(res => {
-        if (res.code == 0) {
+        if (res.code == 200) {
           Toast.success('添加成功')
           navi('/filemanage')
         } else {

@@ -10,13 +10,30 @@ import { useNavigate } from 'react-router'
 import { useStore } from 'reto'
 import { Stack, Container, Input } from '@mui/material';
 import { UploadPageStore } from '../../../states/page/upload-file/index';
-import { uploadFile } from 'src/service/medic'
+import { getUserList, uploadFile } from 'src/service/medic'
+import { useEffect, useState } from 'react'
+import Toast from 'src/components/common/Toast'
+import { RoleSelectData } from 'src/types/models/DataModels'
+import { SelectInput } from 'src/components/common/InputControls'
+
 
 const FileUploadWrapper = () => {
     const states = useStore(UploadPageStore)
     const topSnackBarStates = useStore(SnackBarStore)
     const navigator = useNavigate()
-
+    const [roles, setRoles] = useState<Array<RoleSelectData>>([])
+    useEffect(() => {
+        getUserList().then(res => {
+          if (res && res.code === 200) {
+            if (Array.isArray(res.data)) {
+                console.log(res.data.map((item,idx) => { return { id: idx.toString(), name: item } }))
+              setRoles(res.data.map((item, idx) => { return { id: idx.toString(), name: item } }))
+            }
+          } else {
+            Toast.error('获取用户列表失败')
+          }
+        })
+      }, []) 
     const handleUpload = () => {
       // state.file中存放的文件需要进行上传，写出一个文件上传的表单，并确保后端可以接收到这个文件
       var form = new FormData();
@@ -57,16 +74,18 @@ const FileUploadWrapper = () => {
             </Box>
             <Container maxWidth="lg">
                 <Stack spacing={3}>
+                    <SelectInput
+                        name={"用户名"}
+                        options={roles}
+                        placeHolder={"请选择目标用户"}
+                        onChange={ (e: any) => {
+                            states.setOwner(roles[e.target.value].name)
+                          }}
+                    />
+       
                     <TextField autoFocus
-                        onChange={(event) => states.setOwner(event.target.value)}
                         fullWidth
-                        id='owner' label='用户名'
-                    >
-                        {states.owner}
-                    </TextField>
-                    <TextField autoFocus
-                        fullWidth
-                        id='files' label='上传病例'
+                        id='files'
                         InputProps={{type:'file',
                         onChange:(event:React.ChangeEvent<HTMLInputElement>) => {
                           if (event.target.files[0].size > 10 * 1024 * 1024) { // 10MB

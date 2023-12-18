@@ -67,6 +67,8 @@ const LoginPageWrapper = () => {
                 topSnackBarStates.setSnackBarOpen(true)
                 topSnackBarStates.setSnackBarType('success')
                 localStorage.setItem('token', res.data.token)
+                localStorage.setItem('isAdmin', res.data.isAdmin.toString())
+                console.log("更新管理员状态", localStorage.getItem('isAdmin'))
                 localStorage.setItem('userName', states.userName)
                 navigator('/filemanage', { replace: true })
             } else {
@@ -111,7 +113,7 @@ const LoginPageWrapper = () => {
                 >
                     <FormControlLabel control={<Checkbox />} label='记住我' />
                     <Link
-                        onClick={() => { console.log('111'); navi('/user/register') }}
+                        onClick={() => {navi('/user/register') }}
                         sx={{ userSelect: 'none' }}
                     >
                         注册

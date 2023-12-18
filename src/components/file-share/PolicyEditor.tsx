@@ -6,7 +6,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
   ControlInputProps, PolicyEditorProps,
   SelectInputProps,
-  SwitchInputProps,
   TextInputProps, TimeInputProps
 } from 'src/types/ComponentProps';
 import { SelectInput, SwitchInput, TextInput } from '../common/InputControls';
@@ -49,22 +48,22 @@ const PolicyEditor = ({ items }: PolicyEditorProps) => {
             </Grid>
           )
         }
-
-        case 'switch': {
-          const value = item.value as SwitchInputProps
-          return (
-            <Grid item key={index} display={item.display ? 'block' : 'none'}>
-              <SwitchInput
-                id={value.id}
-                key={index}
-                name={value.name}
-                enabled={value.enabled}
-                checked={value.checked}
-                onChange={value.onChange}
-              />
-            </Grid>
-          )
-        }
+        // 单选框
+        // case 'switch': {
+        //   const value = item.value as SwitchInputProps
+        //   return (
+        //     <Grid item key={index} display={item.display ? 'block' : 'none'}>
+        //       <SwitchInput
+        //         id={value.id}
+        //         key={index}
+        //         name={value.name}
+        //         enabled={value.enabled}
+        //         checked={value.checked}
+        //         onChange={value.onChange}
+        //       />
+        //     </Grid>
+        //   )
+        // }
         case 'title': {
           return (
             <Stack key={index}>

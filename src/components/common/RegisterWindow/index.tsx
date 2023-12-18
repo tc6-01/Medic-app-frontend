@@ -57,7 +57,7 @@ const RegisterWindow = () => {
     const handleClickRegister = () => {
         register(states.userName, states.passWord, states.repetePassword).then((res) => {
             if (res && res.code == "200") {
-                topSnackBarStates.setSnackBarMessage('注册成功，请重新登录')
+                topSnackBarStates.setSnackBarMessage('注册成功，请直接登录')
                 topSnackBarStates.setSnackBarOpen(true)
                 topSnackBarStates.setSnackBarType('success')
                 navigator('/user/login', { replace: true })

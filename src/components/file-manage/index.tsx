@@ -26,7 +26,7 @@ const FileManageWrapper = () => {
         // 获取文件数据
         getFileList().then((res) => {
             setFiles(res.data.map((item, idx) => {
-                const owner = localStorage.getItem('username')
+                const owner = localStorage.getItem('userName')
                 return {
                     id: idx,
                     name: item.fileName,
