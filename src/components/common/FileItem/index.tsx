@@ -1,8 +1,6 @@
 import { FileItemProps } from "src/types/ComponentProps";
-import { MoreVert } from "@material-ui/icons";
 import { FileOpen } from '@mui/icons-material';
-import { Avatar, Box, Grid, ListItemAvatar, ListItemText, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Avatar, Grid, ListItemAvatar, ListItemText, Stack, Typography, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 

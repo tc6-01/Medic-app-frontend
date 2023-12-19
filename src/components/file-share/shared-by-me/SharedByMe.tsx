@@ -21,7 +21,7 @@ const SharedByMeWrapper = () => {
   const bottomeDrawerStates = useStore(BottomDrawerStore)
   useEffect(() => {
     myShareFile().then(res => {
-      if (res && res.code === 0) {
+      if (res && res.code === 200) {
         if (Array.isArray(res.data)) {
           states.setFiles(res.data)
           states.setLoading(false)

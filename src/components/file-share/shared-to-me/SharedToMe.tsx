@@ -9,7 +9,7 @@ import { BottomDrawerStore } from '../../../states/global/BottomDrawerStore'
 import FileItem from "../../common/FileItem"
 import VerticalList from "../../common/VerticalList"
 import SharedToMeFileOperationMenu from "./ShredToMeFileOperationMenu"
-import { FileToFileItemData, getFileList } from "src/service/medic"
+import { FileToFileItemData, getFileList, myBeShareFile } from "src/service/medic"
 import { toLocalTimeString } from "src/utils/time"
 import { sizeToString } from "src/utils/sizeToString"
 
@@ -18,13 +18,10 @@ const SharedToMeWrapper = () => {
   const states = useStore(SharedToMeStore)
   const drawerStates = useStore(BottomDrawerStore)
   useEffect(() => {
-    getFileList().then(res => {
-      if (res && res.code === 0) {
+    myBeShareFile().then(res => {
+      if (res && res.code === 200) {
         if (Array.isArray(res.data)) {
-          states.setFiles(res.data
-            .map((item, idx) => {
-              return FileToFileItemData(idx, item)
-            }))
+          states.setFiles(res.data)
           states.setLoading(false)
         } else {
           states.setFiles([res.data])
@@ -55,7 +52,7 @@ const SharedToMeWrapper = () => {
   const onOperationClicked = (index: number) => {
     drawerStates.setBottomDrawerOpen(true)
     drawerStates.setBottomDrawerContent(
-      <SharedToMeFileOperationMenu fileName={states.files[index].name} onOperationClicked={(ty) => handleFileOperation(ty, index)} />
+      <SharedToMeFileOperationMenu fileName={states.files[index].fileName} onOperationClicked={(ty) => handleFileOperation(ty, index)} />
     )
   }
 
@@ -63,10 +60,10 @@ const SharedToMeWrapper = () => {
     <Fade in={true}>
       <Box>
         <VerticalList items={states.files?.map((SharedItems, index) => {
-          console.log(SharedItems)
+          console.log("共享内容",SharedItems.fileName)
           return <FileItem
             key={index}
-            fileName={SharedItems.name}
+            fileName={SharedItems.fileName}
             fileTime={toLocalTimeString(SharedItems.expire)}
             fileSize={sizeToString(SharedItems.size)}
             remainUse={SharedItems.useLimit - SharedItems.use}

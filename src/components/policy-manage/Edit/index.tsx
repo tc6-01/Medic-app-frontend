@@ -32,7 +32,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
     })
     states.setTo(new Date())
   }, [])
-  console.log(states.role)
   const onChange = (e: any) => {
     // 绑定输入值（时间忽略）
     switch (e.target.id) {

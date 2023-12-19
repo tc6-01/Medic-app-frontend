@@ -29,7 +29,7 @@ const FileManageWrapper = () => {
                 const owner = localStorage.getItem('userName')
                 return {
                     id: idx,
-                    name: item.fileName,
+                    fileName: item.fileName,
                     size: item.fileSize,
                     state: owner == item.owner ? 'owned' : 'fromShared',
                     owner: item.owner,
@@ -53,7 +53,7 @@ const FileManageWrapper = () => {
                 break;
             case 'share':
                 bottomeDrawerStates.setBottomDrawerOpen(false)
-                navi('/policymanage/create', { state: { id: files[index].name } })//传入Id值
+                navi('/policymanage/create', { state: { id: files[index].fileName } })//传入Id值
                 break;
             case 'detail':
                 console.log('detail files at index', index);
@@ -64,7 +64,7 @@ const FileManageWrapper = () => {
     const onOperationClickHandler = (index: number) => {
         bottomeDrawerStates.setBottomDrawerOpen(true)
         bottomeDrawerStates.setBottomDrawerContent(
-            <FileOperationMenu fileName={files[index].name} onOperationClicked={(ty) => handleFileOperation(ty, index)} />
+            <FileOperationMenu fileName={files[index].fileName} onOperationClicked={(ty) => handleFileOperation(ty, index)} />
         )
     }
     const noSelect = noUserSelect()

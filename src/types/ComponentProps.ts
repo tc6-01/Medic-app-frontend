@@ -217,7 +217,7 @@ export type FileState = 'shared' | 'fromShared' | 'owned'
 
 export interface FileItemData {
   id: number
-  name: string
+  fileName: string
   size: number
   expire: number
   owner: string
@@ -312,7 +312,7 @@ export interface SharedByMeListProps {
 
 export interface SharedFileItemData {
   id: number
-  name: string
+  fileName: string
   size: number
   time: number
 }
@@ -330,8 +330,6 @@ export interface PasswordInputProps {
   onChange?: (password: string) => void
   onShowPasswordChange?: () => void
 }
-
-
 
 
 export interface PolicyItemData {

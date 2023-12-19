@@ -4,8 +4,7 @@ import VerticalList from "../common/VerticalList"
 import { useNavigate } from 'react-router';
 import { Box, Fade } from "@mui/material";
 import { useEffect} from "react";
-import { getFileList, myShareFile } from "src/service/medic";
-
+import { myBeShareFile, myShareFile } from "src/service/medic";
 const options = [
     {
         icon: <Person />,
@@ -19,19 +18,18 @@ const options = [
     },
 ]
 
-
 const FileShareWrapper = () => {
     const navi = useNavigate()
     useEffect(() => {
         // 调用接口，获取列表数量
         const getList = async () => {
             myShareFile().then(res => {
-            if (res && res.code === 0) {
+            if (res && res.code === 200) {
                 options[0].description = res.data.length.toString() + '项'
             }
             })
-            getFileList().then(res=>{
-            if (res && res.code === 0) {
+            myBeShareFile().then(res=>{
+            if (res && res.code === 200) {
                 options[1].description = res.data.length.toString() + '项'
                 }
             })
@@ -66,4 +64,8 @@ const FileShareWrapper = () => {
     </Fade>
 }
 export default FileShareWrapper
+
+function Totast(arg0: string) {
+    throw new Error("Function not implemented.");
+}
 

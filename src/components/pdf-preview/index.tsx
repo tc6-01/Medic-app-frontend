@@ -16,7 +16,7 @@ const PdfPreviewWrapper = (props) => {
   const [totalPage, setTotalPages] = useState(1);
   const fileData = props.file as FileItemData
   useEffect(() => {	//重点在此！！！！！如何将PDF文件流转base64
-    downloadFile(fileData.name).then(res => {
+    downloadFile(fileData.fileName).then(res => {
       console.log("下载函数返回值",res)
       let blob = new Blob([res], { type: "application/pdf" })
       let reader = new FileReader();

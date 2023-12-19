@@ -80,10 +80,42 @@ export interface SharedFile {
     useLimit: number;
     /**
      * 
-     * @type {boolean}
+     * @type {number}
      * @memberof SharedFile
      */
-    isGroup: boolean;
+    use: number;
+}
+export interface BeSharedFile {
+    /**
+     * 
+     * @type {string}
+     * @memberof SharedFile
+     */
+    fileName: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SharedFile
+     */
+    fileSize: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SharedFile
+     */
+    from: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SharedFile
+     */
+    expire: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SharedFile
+     */
+    useLimit: number;
     /**
      * 
      * @type {number}
@@ -91,7 +123,6 @@ export interface SharedFile {
      */
     use: number;
 }
-
 export interface LoginResult {
     token: string
     isAdmin : number
@@ -120,7 +151,7 @@ export function FileToFileItemData(idx: number, item: CommonFile): FileItemData 
     const owner = localStorage.getItem('username')
     return {
         id: idx,
-        name: item.fileName,
+        fileName: item.fileName,
         size: item.fileSize,
         state: owner == item.owner ? 'owned' : 'fromShared',
         owner: item.owner,
@@ -133,7 +164,7 @@ export function SharedFileToFileItemData(idx: number, item: SharedFile): FileIte
     const owner = localStorage.getItem('username')
     return {
         id: idx,
-        name: item.fileName,
+        fileName: item.fileName,
         size: item.fileSize,
         state: owner == item.target ? 'owned' : 'fromShared',
         owner: item.target,
@@ -162,11 +193,11 @@ export const register = async (userName: string, passWord: string, repeatPass: s
  * @interface LoginResultResponse
  */
 export const getFileList = async (): Promise<ServiceResponse<Array<CommonFile>>> => {
-    const res = await axios.get('/file', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+    const res = await axios.get('/file/list', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
 export const getUserList = async (): Promise<ServiceResponse<Array<string>>> => {
-    const res = await axios.get('/user', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+    const res = await axios.get('/user/list', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
 
@@ -175,16 +206,22 @@ export const getUserList = async (): Promise<ServiceResponse<Array<string>>> => 
  * @export
  * @interface LoginResultResponse
  */
-// 获取分享出去的文件列表
+// 
 export const shareFile = async (param: ShareParam): Promise<ServiceResponse<undefined>> => {
-    const res = await axios.post('/file/share', param, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+    const res = await axios.post('/user/share', param, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
-// 获取数据
+// 获取分享出去的文件列表
 export const myShareFile = async (): Promise<ServiceResponse<Array<SharedFile>>> => {
     const res = await axios.get('/file/share', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     return res.data
 }
+// 获取当前用户被共享病历
+export const myBeShareFile = async (): Promise<ServiceResponse<Array<BeSharedFile>>> => {
+    const res = await axios.get('/file/be-share', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+    return res.data
+}
+
 // 根据文件名称下载文件
 export const downloadFile = async (fileName: string): Promise<any> => {
     const res = await axios.get(`/file/download?filename=${fileName}`, { responseType: 'blob', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })

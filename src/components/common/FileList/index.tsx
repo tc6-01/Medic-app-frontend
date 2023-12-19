@@ -11,7 +11,7 @@ const FileList = ({ items, onOperationClicked }: FileListProps) => {
         <VerticalList items={
             items.map((item, index) => {
                 return <FileItem key={index}
-                    fileName={item.name}
+                    fileName={item.fileName}
                     fileSize={sizeToString(item.size)}
                     fileTime={toLocalTimeString(item.expire)}
                     remainUse={item.useLimit - item.use}
