@@ -33,6 +33,7 @@ const FileManageCreateLazy = Loader(lazy(() => import('src/pages/file-manage/cre
 const FileShareLazy = Loader(lazy(() => import('src/pages/file-share')));
 const FileSharedByMeLazy = Loader(lazy(() => import('src/pages/file-share/SharedByMe')));
 const FileSharedToMeLazy = Loader(lazy(() => import('src/pages/file-share/SharedToMe')));
+const SharingDetailsLazy = Loader(lazy(() => import('src/pages/file-share/Details')));
 // 我及其子页面
 const MeLazy = Loader(lazy(() => import('src/pages/me')));
 // 群组管理及其子页面
@@ -99,6 +100,10 @@ function createRoutes(isMobile: boolean): RouteObject[] {
         {
           path: 'sharedtome',
           element: <FileSharedToMeLazy />
+        },
+        {
+          path: 'details',
+          element:<SharingDetailsLazy/>
         }
       ]
     },

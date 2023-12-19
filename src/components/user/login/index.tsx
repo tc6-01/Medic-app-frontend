@@ -48,18 +48,6 @@ const LoginPageWrapper = () => {
         states.setUserName(event.target.value)
     }
 
-    const handlePassWordChange = (event: ChangeEvent<HTMLInputElement>) => {
-        states.setPassWord(event.target.value)
-    }
-
-    const handleClickShowPassword = () => {
-        states.setShowPassword(!states.showPassword)
-    }
-
-    const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-    }
-
     const handleClickLogin = () => {
         login(states.userName, states.passWord).then((res) => {
             if (res && res.code == 200) {

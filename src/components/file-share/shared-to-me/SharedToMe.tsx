@@ -43,9 +43,12 @@ const SharedToMeWrapper = () => {
         break;
       case 'share':
         console.log('share files at index', index);
+        drawerStates.setBottomDrawerOpen(false)
+        navi('/policymanage/create', { state: states.files[index].fileName })//传入Id值
         break;
       case 'detail':
-        console.log('detail files at index', index);
+        drawerStates.setBottomDrawerOpen(false)
+        navi('/fileshare/details', {state:states.files[index]})
         break;
     }
   }
@@ -60,12 +63,11 @@ const SharedToMeWrapper = () => {
     <Fade in={true}>
       <Box>
         <VerticalList items={states.files?.map((SharedItems, index) => {
-          console.log("共享内容",SharedItems.fileName)
           return <FileItem
             key={index}
             fileName={SharedItems.fileName}
             fileTime={toLocalTimeString(SharedItems.expire)}
-            fileSize={sizeToString(SharedItems.size)}
+            fileSize={sizeToString(SharedItems.fileSize)}
             remainUse={SharedItems.useLimit - SharedItems.use}
             sharedContent={<FileState state={'shared'} />}
             onOperationClicked={() => onOperationClicked(index)} />

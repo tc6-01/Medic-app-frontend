@@ -1,28 +1,16 @@
 // ** React Imports
 // ** MUI Components
 
-import FooterIllustrationsV1 from 'src/components/user/login/FooterIllustration'
 import { SnackBarStore } from 'src/states/global/TopSnackBarStore'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import MuiCard, { CardProps } from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import { ChangeEvent, MouseEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { useStore } from 'reto'
-import { LoginPageStore } from 'src/states/page/user/login'
 import { Stack, Container } from '@mui/material';
 import PasswordInput from '../PasswordInput/index';
 import { RegisterWindowStore } from '../../../states/page/user/register/index';

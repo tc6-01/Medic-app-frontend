@@ -1,5 +1,4 @@
 import { useRoutes } from 'react-router-dom';
-import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline, useMediaQuery } from '@mui/material';
@@ -10,7 +9,6 @@ import ThemeProvider from 'src/theme/ThemeProvider';
 import BottomPopDrawer from './components/common/BottomPopDrawer';
 import createRoutes from './router';
 import { BottomDrawerStore } from './states/global/BottomDrawerStore';
-import { makeStyles } from '@material-ui/core';
 
 
 function App() {

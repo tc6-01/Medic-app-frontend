@@ -48,6 +48,7 @@ export interface ShareParam {
  * @interface SharedFile
  */
 export interface SharedFile {
+    id : number;
     /**
      * 
      * @type {string}
@@ -86,6 +87,7 @@ export interface SharedFile {
     use: number;
 }
 export interface BeSharedFile {
+    id :number;
     /**
      * 
      * @type {string}
@@ -229,5 +231,9 @@ export const downloadFile = async (fileName: string): Promise<any> => {
 }
 export const uploadFile = async(param:FormData): Promise<any>=>{
     const res = await axios.post(`/admin/upload`,param,{headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }})
+    return res.data
+}
+export const deleteSharingFile = async (id:number) => {
+    const res = await axios.get(`/file/shareDelete?id=${id}`,{headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }})
     return res.data
 }

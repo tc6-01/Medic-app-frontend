@@ -16,10 +16,6 @@ import { getFileList } from "src/service/medic"
 const FileManageWrapper = () => {
     const bottomeDrawerStates = useStore(BottomDrawerStore)
     const navi = useNavigate()
-    const actions: SpeedDialMenuOptionProps[] = [
-        { icon: <FileCopy fontSize="large" />, name: '新建共享资源', onClick: () => { navi('/filemanage/create') } },
-        { icon: <BookOutline fontSize="large" />, name: '添加策略', onClick: () => { navi('/policymanage/create') } },
-    ];
     const [files, setFiles] = useState<FileItemData[]>([]);
     // 使用 useEffect 来在组件挂载后获取数据
     useEffect(() => {
@@ -56,7 +52,8 @@ const FileManageWrapper = () => {
                 navi('/policymanage/create', { state: { id: files[index].fileName } })//传入Id值
                 break;
             case 'detail':
-                console.log('detail files at index', index);
+                bottomeDrawerStates.setBottomDrawerOpen(false)
+                navi('/fileshare/details', {state:files[index]})
                 break;
         }
     }

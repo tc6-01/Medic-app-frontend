@@ -14,10 +14,18 @@ const PdfPreviewWrapper = (props) => {
   const [pdfblob, setPdfBlob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalPage, setTotalPages] = useState(1);
-  const fileData = props.file as FileItemData
+  console.log("组件传递数据",props.file)
+  // 需要将文件字段进行整合，方便统一操作
+  // 拥有的病历与共享得到的病历最大的区别在于state字段，被共享的病历是fromShared状态
+  // 从file-mange的病历具有state字段
+  // 从shareByMe有target字段
+  // 从shareToMe有from字段
+  // 如果目标用户或者发起共享用户为当前用户，
+ const fileData = props.file as {state:string, target:string,fileName:string, expire: number, use:number, useLimit:number}
+  // 需要判断传递过来的病历是否为当前用户所有，如果是就不需要进行可预览次数更新，否则需要进行更新
+
   useEffect(() => {	//重点在此！！！！！如何将PDF文件流转base64
     downloadFile(fileData.fileName).then(res => {
-      console.log("下载函数返回值",res)
       let blob = new Blob([res], { type: "application/pdf" })
       let reader = new FileReader();
       reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
@@ -55,7 +63,7 @@ const PdfPreviewWrapper = (props) => {
           <Box justifyContent={'center'} display='flex'>{`过期时间:${toLocalTimeString(fileData.expire)}`}</Box>
           <Box justifyContent={'center'} display='flex'>{`剩余使用次数:${fileData.useLimit - fileData.use - 1}`}</Box>
           <Box justifyContent={'center'} display='flex' sx={{ objectFit: 'contain' }}>
-            <PDF scale={0.8}
+            <PDF scale={0.6}
               workerSrc='pdf.worker.js'
               file={newpdfblob}
               onDocumentComplete={onDocumentLoadSuccess}

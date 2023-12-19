@@ -17,8 +17,7 @@ const FileOperationMenu = ({ fileName, onOperationClicked }: FileOperationMenuPr
                 <Section title='文件操作'>
                     <VerticalList items={[
                         <OperationItem icon={<FolderArrowUp fontSize='large' />} name={'打开'} onclick={() => onOperationClicked('open')} />,
-                        <OperationItem icon={<Share fontSize='large' />} name={'共享'} onclick={() => onOperationClicked('share')} />,
-                        <OperationItem icon={<Delete fontSize='large' />} name={'删除'} onclick={() => onOperationClicked('delete')} />
+                        <OperationItem icon={<Share fontSize='large' />} name={'共享'} onclick={() => onOperationClicked('share')} />
                     ]} />
                 </Section>
                 <Section title='更多操作'>

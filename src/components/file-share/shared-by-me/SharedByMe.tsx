@@ -1,23 +1,22 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import { getPolicies } from "src/service/policyApi"
 import FileItem from "../../common/FileItem"
 import VerticalList from "../../common/VerticalList"
 import { useStore } from 'reto';
 import { SharedByMeStore } from "src/states/page/file-share/sharedbyme"
 import FileState from "src/components/common/FileState"
 import { BottomDrawerStore } from '../../../states/global/BottomDrawerStore';
-import FileOperationMenu from "./ShredByMeFileOperationMenu"
 import ShredByMeFileOperationMenu from "./ShredByMeFileOperationMenu"
 import { Box, Fade } from "@mui/material"
-import { FileToFileItemData, SharedFileToFileItemData, getFileList, myShareFile } from "src/service/medic"
+import { SharedFileToFileItemData, deleteSharingFile, myShareFile } from "src/service/medic"
 import { toLocalTimeString } from "src/utils/time"
 import { sizeToString } from "src/utils/sizeToString"
-import { shareFile } from '../../../service/medic';
+import { SnackBarStore } from "src/states/global/TopSnackBarStore";
 
 const SharedByMeWrapper = () => {
   const navi = useNavigate()
   const states = useStore(SharedByMeStore)
+  const topSnackBarStates = useStore(SnackBarStore)
   const bottomeDrawerStates = useStore(BottomDrawerStore)
   useEffect(() => {
     myShareFile().then(res => {
@@ -35,14 +34,30 @@ const SharedByMeWrapper = () => {
   const handleFileOperation = (ty: any, index: number) => {
     switch (ty) {
       case 'delete':
-        console.log('delete files at index', index);
+        bottomeDrawerStates.setBottomDrawerOpen(false)
+        deleteSharingFile(states.files[index].id).then((res) => {
+          if (res && res.code == 200) {
+              topSnackBarStates.setSnackBarMessage('病历共享记录删除成功')
+              topSnackBarStates.setSnackBarOpen(true)
+              topSnackBarStates.setSnackBarType('success')
+          } else {
+              topSnackBarStates.setSnackBarMessage(`删除失败,${res.message}`)
+              topSnackBarStates.setSnackBarOpen(true)
+              topSnackBarStates.setSnackBarType('warning')
+          }
+      }).catch((err) => {
+          topSnackBarStates.setSnackBarMessage(`删除失败,${err}`)
+          topSnackBarStates.setSnackBarOpen(true)
+          topSnackBarStates.setSnackBarType('error')
+      })
         break;
       case 'open':
         bottomeDrawerStates.setBottomDrawerOpen(false)
         navi('/pdfpreview', { state: SharedFileToFileItemData(index, states.files[index]) })//传入Id值
         break;
       case 'detail':
-        console.log('detail files at index', index);
+        bottomeDrawerStates.setBottomDrawerOpen(false)
+        navi('/fileshare/details', {state:states.files[index]})
         break;
     }
   }
