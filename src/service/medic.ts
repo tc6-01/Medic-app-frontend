@@ -67,6 +67,8 @@ export interface SharedFile {
      * @memberof SharedFile
      */
     target: string;
+    from:string;
+    owner:string;
     /**
      * 
      * @type {number}

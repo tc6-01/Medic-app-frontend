@@ -53,11 +53,23 @@ export default function CustomizedAccordions(props) {
       setExpanded(newExpanded ? panel : false);
     };
     const file = props.props
+    console.log(file)
+    // 分三类详情页（当前用户拥有并未共享，当前用户共享出去，当前用户被共享）
+    // 来自病历管理页（只有owner），来自共享页面（包含target，from）
     let sourceAndTarget = `病历来源 ${localStorage.getItem("userName")} 共享至 ${file.target}`
-    if(file.target == undefined){
-        sourceAndTarget = `病历来源 ${localStorage.getItem("userName")} , 暂未共享`
-    }else if(file.target == localStorage.getItem("userName")){
-      sourceAndTarget = `病历来源 ${file.owner}  共享至 ${file.target}`
+    if(file.owner != undefined){
+      // 第一种
+      if (file.state == "fromShared"){
+        sourceAndTarget = `病历来源 ${file.owner} , 共享至 ${localStorage.getItem('userName')}`
+      }else{
+        sourceAndTarget = `病历来源 ${file.owner} , 暂未共享`
+      }
+    }else if(file.from != undefined){
+      // 第三种
+      sourceAndTarget = `病历来源 ${file.from}  共享至 ${localStorage.getItem('userName')}`
+    }else if(file.target != undefined){
+      // 第二种
+      sourceAndTarget = `病历来源 ${localStorage.getItem('userName')}  共享至 ${file.target}`
     }
   return (
     <div>

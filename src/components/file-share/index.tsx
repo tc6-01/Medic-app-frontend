@@ -20,16 +20,21 @@ const options = [
 
 const FileShareWrapper = () => {
     const navi = useNavigate()
+    let n1 ,n2;
     useEffect(() => {
         // 调用接口，获取列表数量
+        n1 = 0;
+        n2 = 0;
         const getList = async () => {
             myShareFile().then(res => {
             if (res && res.code === 200) {
+                n1 = res.data.length
                 options[0].description = res.data.length.toString() + '项'
             }
             })
             myBeShareFile().then(res=>{
             if (res && res.code === 200) {
+                n2 = res.data.length
                 options[1].description = res.data.length.toString() + '项'
                 }
             })
@@ -40,9 +45,15 @@ const FileShareWrapper = () => {
     const handleFileGroupClicked = (index: number) => {
         switch (index) {
             case 0:
+                if (n1 == 0){
+                    break;
+                }
                 navi('/fileshare/sharedbyme')
                 break
             case 1:
+                if(n2 == 0){
+                    break;
+                }
                 navi('/fileshare/sharedtome')
                 break
             default:
