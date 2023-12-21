@@ -48,7 +48,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         states.setRole(e.target.value)
         break
       case 'allow':
-        states.setAllow(e.target.value)
+        states.setAllow(parseInt(e.target.value))
         break
       default:
         break
@@ -64,6 +64,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         value: {
           id: 'policyName',
           name: '策略名称',
+          defaultValue:states.policyName,
           placeHolder: '请输入共享策略名称',
           onChange: onChange
         }
@@ -74,6 +75,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         value: {
           id: 'des',
           name: '策略描述',
+          defaultValue:states.des,
           placeHolder: '请输入共享描述',
           onChange: onChange
         }
@@ -86,14 +88,6 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         type: 'control',
         value: {
           items: [
-            {
-              name: '限制访问账号',
-              enabled: true,
-              checked: states.roleDisplay,
-              onChange: (e: any) => {
-                states.setRoleDisplay(e.target.checked)
-              }
-            },
             {
               name: '限制使用次数',
               enabled: true,
@@ -124,11 +118,12 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
 
       {
         type: 'select',
-        display: states.roleDisplay,
+        display:true,
         value: {
           id: 'role',
-          name: '用户角色',
+          name: '共享至',
           placeHolder: '请选择共享用户',
+          defaultValue:states.role,
           options: roles,
           onChange: (e: any) => {
             states.setRole(e.target.value)
@@ -141,6 +136,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         value: {
           id: 'count',
           name: '用户可访问次数',
+          defaultValue:states.count.toString(),
           placeHolder: '请输入用户可访问次数',
           onChange: onChange
         }
@@ -152,6 +148,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
           id: 'to',
           value: states.to,
           title: '共享结束时间',
+          defaultValue:states.to.toString(),
           onChange: (newValue: any) => {
             states.setTo(newValue)
           }
@@ -163,6 +160,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         value: {
           id: 'allow',
           name: '用户是否可以共享',
+          defaultValue:states.isAllow.toString(),
           placeHolder: '如果赋予权限请填1，否则为0',
           onChange: onChange
         }
@@ -188,9 +186,16 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
 
   //创建数据通道请求
   const onSubmit = () => {
+    if(states.policyName.length == 0){
+      Toast.warning("策略名不能为空")
+      return
+    }
     if (states.des.length == 0) {
       Toast.warning('描述不能为空！')
       return
+    }
+    if(states.role.length == 0){
+      Toast.warning("共享目标用户不能为空")
     }
     if(states.to.getTime() > file.expire ){
       Toast.warning('共享结束时间不能超过病历过期时间！')
@@ -200,52 +205,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
       Toast.warning('病历可访问次数共享次数不能超过剩余次数！')
       return
     }
-    // 额外添加限制条件
-    // let rules = []
-    // states.userId.length !== 0 && states.userIdDisplay
-    //   ? rules.push({
-    //     type: 'user',
-    //     value: states.userId
-    //   })
-    //   : ''
-    // states.url.length !== 0 && states.urlDisplay
-    //   ? rules.push({
-    //     type: 'target',
-    //     value: states.url
-    //   })
-    //   : ''
-    // // 添加访问次数限制
-    // states.count !== 0 && states.countDisplay
-    //   ? rules.push({
-    //     type: 'count',
-    //     value: states.count
-    //   })
-    //   : ''
-    // states.period.length !== 0 && states.peroidDisplay
-    //   ? rules.push({
-    //     type: 'peroid',
-    //     value: states.period
-    //   })
-    //   : ''
-    // // 添加访问时间限制
-    // states.from != null && states.timeDisplay
-    //   ? rules.push({
-    //     type: 'useTime',
-    //     value: {
-    //       from: states.from.getTime(), //时间戳
-    //       to: states.to.getTime(),
-    //       delete: states.checked //到时间是否删除
-    //     }
-    //   })
-    //   : ''
-    // // 添加用户访问限制
-    // states.role.length !== 0 && states.roleDisplay
-    //   ? rules.push({
-    //     type: 'role',
-    //     value: states.role
-    //   })
-    //   : ''
-
+    console.log(file)
     shareFile({
       fileName: file.fileName,
       target: roles[states.role].name,
@@ -253,14 +213,16 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
       useLimit: states.count,
       name: states.policyName,
       desc: states.des,
-      isAllow:states.isAllow
+      isAllow:states.isAllow,
+      state:file.state,
     })
       .then(res => {
         if (res.code == 200) {
-          Toast.success('添加成功')
+          Toast.success('病历共享成功')
           navi('/filemanage')
         } else {
-          Toast.error('请求失败' + res.message)
+          console.log(res)
+          Toast.error('请求失败 ' + res.msg)
         }
       })
       .catch(error => {

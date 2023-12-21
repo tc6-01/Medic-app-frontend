@@ -23,11 +23,22 @@ const SharedByMeWrapper = () => {
     myShareFile().then(res => {
       if (res && res.code === 200) {
         if (Array.isArray(res.data)) {
-          states.setFiles(res.data)
+          states.setFiles(res.data.map((item, idx) => {
+            return {
+                id: item.id,
+                fileName: item.fileName,
+                fileSize: item.fileSize,
+                state: 'fromShared',
+                target: item.target,
+                use: item.use,
+                useLimit: item.useLimit,
+                expire: item.expire,
+                isAllow:item.isAllow
+            }}))
           states.setLoading(false)
         } else {
           states.setFiles([res.data])
-        }
+        }    
       }
     })
   }, [])

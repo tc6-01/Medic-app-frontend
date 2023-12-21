@@ -36,6 +36,7 @@ const FileManageWrapper = () => {
                     isAllow:item.isAllow
                 }
             }))
+            console.log("主页病历", files)
         })
     }, []); // 空依赖数组意味着这个 useEffect 只会在组件挂载后执行一次
 
@@ -54,7 +55,7 @@ const FileManageWrapper = () => {
                     Toast.warning("当前病历并未分配共享权限，请联系共享来源用户")
                     break;
                 }   
-                navi('/policymanage/create', { state: { id: files[index].fileName } })//传入Id值
+                navi('/policymanage/create', { state: files[index] })//传入Id值
                 break;
             case 'detail':
                 bottomeDrawerStates.setBottomDrawerOpen(false)

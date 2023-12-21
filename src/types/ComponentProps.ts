@@ -255,6 +255,10 @@ export interface FileListProps {
   items: FileItemData[]
   onOperationClicked?: (index: number) => void
 }
+export interface ShareItemProps{
+  items:{name:string, description:string, icon:any}[] 
+  onOperationCilcked?:(index:number)=>void
+}
 
 export interface GroupItemProps {
   groupName: string

@@ -3,9 +3,7 @@ import { useStore } from 'reto'
 import { BeSharedFile } from 'src/service/medic'
 import { ConfirmDeleteDialogStore } from 'src/states/common/ConfirmDeleteDialogStore'
 import { LoadingStore } from 'src/states/common/LoadingStore'
-import { FileItemData } from 'src/types/ComponentProps'
 
-type SnackBarType = 'success' | 'error' | 'warning' | 'info'
 
 // 新建数据通道
 export interface SharedToMeStates {

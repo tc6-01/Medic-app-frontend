@@ -60,7 +60,7 @@ const LoginPageWrapper = () => {
                 localStorage.setItem('userName', states.userName)
                 navigator('/filemanage', { replace: true })
             } else {
-                topSnackBarStates.setSnackBarMessage(`登录失败,${res.message}`)
+                topSnackBarStates.setSnackBarMessage(`登录失败,${res.msg}`)
                 topSnackBarStates.setSnackBarOpen(true)
                 topSnackBarStates.setSnackBarType('error')
             }
