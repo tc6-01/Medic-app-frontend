@@ -12,6 +12,7 @@ import SharedToMeFileOperationMenu from "./ShredToMeFileOperationMenu"
 import { FileToFileItemData, getFileList, myBeShareFile } from "src/service/medic"
 import { toLocalTimeString } from "src/utils/time"
 import { sizeToString } from "src/utils/sizeToString"
+import Toast from "src/components/common/Toast"
 
 const SharedToMeWrapper = () => {
   const navi = useNavigate()
@@ -44,7 +45,11 @@ const SharedToMeWrapper = () => {
       case 'share':
         console.log('share files at index', index);
         drawerStates.setBottomDrawerOpen(false)
-        navi('/policymanage/create', { state: states.files[index].fileName })//传入Id值
+        if(states.files[index].isAllow != 1){
+          Toast.warning("当前病历并未分配共享权限，请联系共享来源用户")
+          break;
+        }
+        navi('/policymanage/create', { state: states.files[index] })//传入Id值
         break;
       case 'detail':
         drawerStates.setBottomDrawerOpen(false)
@@ -69,7 +74,7 @@ const SharedToMeWrapper = () => {
             fileTime={toLocalTimeString(SharedItems.expire)}
             fileSize={sizeToString(SharedItems.fileSize)}
             remainUse={SharedItems.useLimit - SharedItems.use}
-            sharedContent={<FileState state={'shared'} />}
+            sharedContent={<FileState state={'fromShared'} />}
             onOperationClicked={() => onOperationClicked(index)} />
         })} onItemClicked={onOperationClicked} />
       </Box>

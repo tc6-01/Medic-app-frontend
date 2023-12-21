@@ -12,7 +12,7 @@ import { FileOperationMenuProps } from '../../../types/ComponentProps';
 const FileOperationMenu = ({ fileName, onOperationClicked }: FileOperationMenuProps) => {
     return (
         <Stack m={1}>
-            <Box borderRadius={3}>
+            <Box borderRadius={5}>
                 <SimpleFileItem fileName={fileName} />
                 <Section title='文件操作'>
                     <VerticalList items={[

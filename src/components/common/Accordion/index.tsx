@@ -47,13 +47,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function CustomizedAccordions(props) {
     // 获取必要的文件信息
-  const [expanded, setExpanded] = React.useState<string | false>('panel1');
+  const [expanded, setExpanded] = React.useState<string | false>('');
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
     const file = props.props
-    console.log(file)
     // 分三类详情页（当前用户拥有并未共享，当前用户共享出去，当前用户被共享）
     // 来自病历管理页（只有owner），来自共享页面（包含target，from）
     let sourceAndTarget = `病历来源 ${localStorage.getItem("userName")} 共享至 ${file.target}`
@@ -70,6 +69,10 @@ export default function CustomizedAccordions(props) {
     }else if(file.target != undefined){
       // 第二种
       sourceAndTarget = `病历来源 ${localStorage.getItem('userName')}  共享至 ${file.target}`
+    }
+    let remoteControl = "病历拥有者并未授权"
+    if(file.isAllow == 1){
+      remoteControl = "病历拥有者已授权,可进行二次共享"
     }
   return (
     <div>
@@ -100,6 +103,16 @@ export default function CustomizedAccordions(props) {
         <AccordionDetails>
           <Typography>
             {sourceAndTarget}
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+          <Typography>延伸控制选项</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            {remoteControl}
           </Typography>
         </AccordionDetails>
       </Accordion>

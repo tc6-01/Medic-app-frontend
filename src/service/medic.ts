@@ -38,6 +38,7 @@ export interface ShareParam {
      * @memberof ShareParam
      */
     useLimit: number;
+    isAllow:number;
 }
 
 
@@ -87,6 +88,10 @@ export interface SharedFile {
      * @memberof SharedFile
      */
     use: number;
+        /*
+    * 确认是否可以被共享
+    */
+    isAllow:number;
 }
 export interface BeSharedFile {
     id :number;
@@ -126,6 +131,10 @@ export interface BeSharedFile {
      * @memberof SharedFile
      */
     use: number;
+    /*
+    * 确认是否可以被共享
+    */
+    isAllow:number;
 }
 export interface LoginResult {
     token: string
@@ -148,7 +157,11 @@ export interface CommonFile {
     expire: number,
     use: number,
     useLimit: number,
-    fileSize: number
+    fileSize: number,
+        /*
+    * 确认是否可以被共享
+    */
+    isAllow:number;
 }
 
 export function FileToFileItemData(idx: number, item: CommonFile): FileItemData {
@@ -159,6 +172,7 @@ export function FileToFileItemData(idx: number, item: CommonFile): FileItemData 
         size: item.fileSize,
         state: owner == item.owner ? 'owned' : 'fromShared',
         owner: item.owner,
+        isAllow: item.isAllow,
         use: item.use,
         useLimit: item.useLimit,
         expire: item.expire
@@ -172,6 +186,7 @@ export function SharedFileToFileItemData(idx: number, item: SharedFile): FileIte
         size: item.fileSize,
         state: owner == item.target ? 'owned' : 'fromShared',
         owner: item.target,
+        isAllow: item.isAllow,
         use: item.use,
         useLimit: item.useLimit,
         expire: item.expire

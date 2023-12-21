@@ -13,6 +13,7 @@ import { BookOutline } from "mdi-material-ui";
 import { useNavigate } from "react-router";
 import { bool } from "prop-types";
 import { getFileList } from "src/service/medic"
+import Toast from "../common/Toast";
 const FileManageWrapper = () => {
     const bottomeDrawerStates = useStore(BottomDrawerStore)
     const navi = useNavigate()
@@ -31,14 +32,14 @@ const FileManageWrapper = () => {
                     owner: item.owner,
                     use: item.use,
                     useLimit: item.useLimit,
-                    expire: item.expire
+                    expire: item.expire,
+                    isAllow:item.isAllow
                 }
             }))
         })
     }, []); // 空依赖数组意味着这个 useEffect 只会在组件挂载后执行一次
 
     const handleFileOperation = (ty: FileManageOperationType, index: number) => {
-        console.log(files[index]);
         switch (ty) {
             case 'delete':
                 console.log('delete files at index', index);
@@ -49,6 +50,10 @@ const FileManageWrapper = () => {
                 break;
             case 'share':
                 bottomeDrawerStates.setBottomDrawerOpen(false)
+                if(files[index].isAllow != 1){
+                    Toast.warning("当前病历并未分配共享权限，请联系共享来源用户")
+                    break;
+                }   
                 navi('/policymanage/create', { state: { id: files[index].fileName } })//传入Id值
                 break;
             case 'detail':

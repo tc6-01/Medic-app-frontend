@@ -220,6 +220,7 @@ export interface FileItemData {
   fileName: string
   size: number
   expire: number
+  isAllow:number
   owner: string
   use: number
   useLimit: number

@@ -10,6 +10,7 @@ export interface CreatePolicyPageStates {
   from: Date | null
   to: Date | null
   url: Array<[]>
+  isAllow:number
   role: string
   count: number
   period: string
@@ -21,6 +22,7 @@ export interface CreatePolicyPageStates {
   roleDisplay: boolean
   countDisplay: boolean
   peroidDisplay: boolean
+  allowDisplay: boolean
   defaultUserId: string
   defaultUrl: string
 }
@@ -43,6 +45,8 @@ export interface CreatePolicyPageStore extends CreatePolicyPageStates {
   setRoleDisplay: Dispatch<SetStateAction<boolean>>
   setCountDisplay: Dispatch<SetStateAction<boolean>>
   setPeroidDisplay: Dispatch<SetStateAction<boolean>>
+  setAllow:Dispatch<SetStateAction<number>>
+  setAllowDisplay: Dispatch<SetStateAction<boolean>>
   setDefaultUserId: Dispatch<SetStateAction<string>>
   setdefaultUrl: Dispatch<SetStateAction<string>>
 }
@@ -54,6 +58,7 @@ export function CreatePolicyPageStore(): CreatePolicyPageStore {
   const [to, setTo] = useState(new Date('2022-01-01T00:00:00.000Z'))
   const [url, setUrl] = useState([])
   const [role, setRole] = useState('')
+  const [isAllow, setAllow] = useState(0)
   const [count, setCount] = useState(0)
   const [period, setPeriod] = useState('')
   const [userId, setUserId] = useState([])
@@ -64,8 +69,8 @@ export function CreatePolicyPageStore(): CreatePolicyPageStore {
   const [roleDisplay, setRoleDisplay] = useState(false)
   const [countDisplay, setCountDisplay] = useState(false)
   const [peroidDisplay, setPeroidDisplay] = useState(false)
+  const [allowDisplay, setAllowDisplay] = useState(false)
   // options 数据
-
   const [rules, setRules] = useState<Rule[]>([])
   const [defaultUserId, setDefaultUserId] = useState('')
   const [defaultUrl, setdefaultUrl] = useState('')
@@ -74,6 +79,10 @@ export function CreatePolicyPageStore(): CreatePolicyPageStore {
     setPolicyName,
     des,
     setDes,
+    isAllow,
+    setAllow,
+    allowDisplay,
+    setAllowDisplay,
     rules,
     setRules,
     from,

@@ -1,7 +1,7 @@
 import { Button, Grid, Stack, Fade } from '@mui/material';
 import { useStore } from 'reto'
 // import { createData } from 'src/service/Data';
-import { CreateProps, PolicyEditorProps } from 'src/types/ComponentProps'
+import { CreateProps, FileItemData, PolicyEditorProps } from 'src/types/ComponentProps'
 import Toast from '../../common/Toast'
 
 import { addPolicy } from 'src/service/policyApi'
@@ -18,7 +18,7 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
   const states = useStore(CreatePolicyPageStore)
   const navi = useNavigate()
   const location = useLocation();
-  const filename = (location.state as { id: string }).id;
+  const file = (location.state as FileItemData);
   const [roles, setRoles] = useState<Array<RoleSelectData>>([])
   useEffect(() => {
     getUserList().then(res => {
@@ -46,6 +46,9 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
         break
       case 'role':
         states.setRole(e.target.value)
+        break
+      case 'allow':
+        states.setAllow(e.target.value)
         break
       default:
         break
@@ -107,6 +110,14 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
                 states.setTimeDisplay(e.target.checked)
               }
             },
+            {
+              name:'限制后续传播共享',
+              enabled:true,
+              checked: states.allowDisplay,
+              onChange: (e: any) => {
+                states.setAllowDisplay(e.target.checked)
+              }
+            }
           ]
         }
       },
@@ -145,6 +156,16 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
             states.setTo(newValue)
           }
         }
+      },
+      {
+        type: 'text',
+        display: states.allowDisplay,
+        value: {
+          id: 'allow',
+          name: '用户是否可以共享',
+          placeHolder: '如果赋予权限请填1，否则为0',
+          onChange: onChange
+        }
       }
      
       // 默认使用到时删除
@@ -169,6 +190,14 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
   const onSubmit = () => {
     if (states.des.length == 0) {
       Toast.warning('描述不能为空！')
+      return
+    }
+    if(states.to.getTime() > file.expire ){
+      Toast.warning('共享结束时间不能超过病历过期时间！')
+      return
+    }
+    if(states.count > (file.useLimit - file.use)){
+      Toast.warning('病历可访问次数共享次数不能超过剩余次数！')
       return
     }
     // 额外添加限制条件
@@ -218,12 +247,13 @@ const PolicyManageCreateWrapper = ({ }: CreateProps) => {
     //   : ''
 
     shareFile({
-      fileName: filename,
+      fileName: file.fileName,
       target: roles[states.role].name,
       expire: states.to.getTime(),
       useLimit: states.count,
       name: states.policyName,
       desc: states.des,
+      isAllow:states.isAllow
     })
       .then(res => {
         if (res.code == 200) {
