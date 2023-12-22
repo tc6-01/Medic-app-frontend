@@ -70,11 +70,16 @@ const SharedToMeWrapper = () => {
     }
   }
   const onOperationClicked = (index: number) => {
+    const validNum = states.files[index].useLimit - states.files[index].use
     console.log("文件过期时间",states.files[index].expire)
     console.log("当前时间",new Date().getTime())
     if(states.files[index].expire < new Date().getTime()){
         Toast.warning("该文件已过期，请联系病历拥有者")
         return;
+    }
+    if(validNum <= 0){
+      Toast.warning("该文件已被使用完毕，请联系文件拥有者")
+      return;
     }
     drawerStates.setBottomDrawerOpen(true)
     drawerStates.setBottomDrawerContent(

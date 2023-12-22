@@ -65,10 +65,15 @@ const FileManageWrapper = () => {
     }
 
     const onOperationClickHandler = (index: number) => {
+        const validNum = files[index].useLimit - files[index].use
         console.log("文件过期时间",files[index].expire)
         console.log("当前时间",new Date().getTime())
         if(files[index].expire < new Date().getTime()){
             Toast.warning("该文件已过期，请联系病历拥有者")
+            return;
+        }
+        if(validNum <= 0){
+            Toast.warning("该文件已被使用次数用完，请联系病历拥有者")
             return;
         }
         bottomeDrawerStates.setBottomDrawerOpen(true)

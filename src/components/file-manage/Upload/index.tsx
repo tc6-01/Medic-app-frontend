@@ -36,6 +36,10 @@ const FileUploadWrapper = () => {
       }, []) 
     const handleUpload = () => {
       // state.file中存放的文件需要进行上传，写出一个文件上传的表单，并确保后端可以接收到这个文件
+      if(states.file == null || states.owner == null){
+        Toast.warning("请选择病历拥有者或上传病历")
+        return
+      }
       var form = new FormData();
       form.append("files", states.file)
       form.append("fileSize", states.file.size.toString())
@@ -45,12 +49,12 @@ const FileUploadWrapper = () => {
         uploadFile(form).then((res)=>{
           console.log(res)  
           if (res && res.code == "200") {
-                    topSnackBarStates.setSnackBarMessage('文件上传成功')
+                    topSnackBarStates.setSnackBarMessage('病历上传成功')
                     topSnackBarStates.setSnackBarOpen(true)
                     topSnackBarStates.setSnackBarType('success')
                     navigator('/me', { replace: true })
                 } else {
-                    topSnackBarStates.setSnackBarMessage(`文件上传失败, ${res.msg}`)
+                    topSnackBarStates.setSnackBarMessage(`病历上传失败, ${res.msg}`)
                     topSnackBarStates.setSnackBarOpen(true)
                     topSnackBarStates.setSnackBarType('info')
                 }
