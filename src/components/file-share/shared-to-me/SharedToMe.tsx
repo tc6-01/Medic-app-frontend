@@ -39,7 +39,6 @@ const SharedToMeWrapper = () => {
         } else {
           states.setFiles([res.data])
         }
-        console.log("共享至本人病历",states.files)
       }
     })
   }, [])
@@ -71,6 +70,12 @@ const SharedToMeWrapper = () => {
     }
   }
   const onOperationClicked = (index: number) => {
+    console.log("文件过期时间",states.files[index].expire)
+    console.log("当前时间",new Date().getTime())
+    if(states.files[index].expire < new Date().getTime()){
+        Toast.warning("该文件已过期，请联系病历拥有者")
+        return;
+    }
     drawerStates.setBottomDrawerOpen(true)
     drawerStates.setBottomDrawerContent(
       <SharedToMeFileOperationMenu fileName={states.files[index].fileName} onOperationClicked={(ty) => handleFileOperation(ty, index)} />

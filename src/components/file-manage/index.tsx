@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import { bool } from "prop-types";
 import { getFileList } from "src/service/medic"
 import Toast from "../common/Toast";
+import { toLocalTimeString } from "src/utils/time";
 const FileManageWrapper = () => {
     const bottomeDrawerStates = useStore(BottomDrawerStore)
     const navi = useNavigate()
@@ -36,7 +37,6 @@ const FileManageWrapper = () => {
                     isAllow:item.isAllow
                 }
             }))
-            console.log("主页病历", files)
         })
     }, []); // 空依赖数组意味着这个 useEffect 只会在组件挂载后执行一次
 
@@ -65,6 +65,12 @@ const FileManageWrapper = () => {
     }
 
     const onOperationClickHandler = (index: number) => {
+        console.log("文件过期时间",files[index].expire)
+        console.log("当前时间",new Date().getTime())
+        if(files[index].expire < new Date().getTime()){
+            Toast.warning("该文件已过期，请联系病历拥有者")
+            return;
+        }
         bottomeDrawerStates.setBottomDrawerOpen(true)
         bottomeDrawerStates.setBottomDrawerContent(
             <FileOperationMenu fileName={files[index].fileName} onOperationClicked={(ty) => handleFileOperation(ty, index)} />

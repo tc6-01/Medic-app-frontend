@@ -88,8 +88,8 @@ const FileUploadWrapper = () => {
                         id='files'
                         InputProps={{type:'file',
                         onChange:(event:React.ChangeEvent<HTMLInputElement>) => {
-                          if (event.target.files[0].size > 10 * 1024 * 1024) { // 10MB
-                            alert('文件大小不能超过10MB');
+                          if (event.target.files[0].size > 1 * 1024 * 1024) { // 1MB
+                            Toast.warning('文件大小不能超过10MB');
                             event.preventDefault();
                           } else {
                             states.setFile(event.target.files[0]);
