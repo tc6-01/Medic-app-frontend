@@ -26,7 +26,10 @@ const MePageWrapper = () => {
                         Toast.warning("只有管理员才能上传文件!")
                     }
                 }}/>
-                <OperationItem icon={<LogoutOutlined />} name={"注销"} />
+                <OperationItem icon={<LogoutOutlined />} name={"注销"} onclick={()=>{
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('tokenRefreshAfter');
+                }}/>
 
             </Stack>
         </Fade>

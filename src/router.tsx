@@ -69,7 +69,7 @@ function createRoutes(isMobile: boolean): RouteObject[] {
   return [
     {
       path: '',
-      element: <Navigate to="/filemanage" replace />,
+      element: <Navigate to="/user/login" replace />,
     },
     {
       path: '/filemanage',
